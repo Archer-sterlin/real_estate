@@ -5,7 +5,6 @@ from .forms import ListingForm
 # Create your views here.
 
 
-
 def listing_list(request, *args, **kwargs):
     listings = Listing.objects.all()
     context = {
@@ -14,12 +13,13 @@ def listing_list(request, *args, **kwargs):
     return render(request, "listings.html", context)
 
 
-def listing_retrieve(request, id, *args, **kwargs):
-    listing = Listing.objects.get(id=id)
+def listing_retrieve(request, pk):
+    listing = Listing.objects.get(id=pk)
     context = {
         "listing": listing
     }
     return render(request, "retrieve_listing.html", context)
+
 
 def listing_create(request):
     form = ListingForm()
@@ -33,3 +33,25 @@ def listing_create(request):
         "form":form
     }
     return render(request, "listing_create.html", context)
+
+
+def listing_update(request, pk):
+    listing = Listing.objects.get(id=pk)
+    form = ListingForm(instance=listing)
+    
+    if request.method == 'POST':
+        form = ListingForm(request.POST, instance=listing)
+        if form.is_valid():
+            form.save()
+            return redirect('/')
+        
+    context = {
+        "form":form
+    }
+    return render(request, "listing_update.html", context)
+
+
+def listing_delete(request, pk):
+    listing = Listing.objects.get(id=pk)
+    listing.delete()
+    return redirect('/')
