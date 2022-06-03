@@ -1,6 +1,15 @@
-<form method="post" action="">
-    <h1>Add Listings</h1>
+{% extends "base.html"%}
+{% block title %}
+Listing Create
+{% endblock title %}
+
+{% block content %}
+
+<h1 class="text-4xl text-gray-900">Add a Listings</h1>
+<form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
     <button>Submit</button>
 </form>
+
+{% endblock %}
